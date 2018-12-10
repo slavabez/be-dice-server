@@ -1,7 +1,7 @@
 import "jest";
 import BeDiceServer from "../BeDiceServer";
 import * as ioClient from "socket.io-client";
-import RoomManager, {RollMessage, Room} from "../helpers/RoomManager";
+import RoomManager, { RollMessage, Room } from "../helpers/RoomManager";
 import FakeGenerator from "../helpers/FakeGenerator";
 
 describe("Server-client integration tests", () => {
