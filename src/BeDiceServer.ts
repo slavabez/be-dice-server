@@ -23,19 +23,13 @@ class BeDiceServer {
   public rm: RoomManager;
 
   constructor() {
-    this.app = express();
-    this.server = createServer(this.app);
-    this.io = socketIO(this.server);
-    this.setupExpress();
+    this.io = socketIO();
     this.um = new UserManager();
     this.rm = new RoomManager();
   }
 
-  listen(port?: number): void {
-    this.server.listen(port, () => {
-      console.log(`Be-Dice Server listening on port ${this.getPort()}`);
-    });
-    this.address = this.server.address();
+  listen(port: number): void {
+    this.io.listen(port);
     this.io.on("connection", (socket: socketIO.Socket) => {
       // New user connected, attach socket event listeners
       this.addEventListeners(socket);
