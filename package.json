@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "debug": "node --inspect=5858 -r ts-node/register server/index.ts",
+    "debug": "node --inspect=5858 -r ts-node/register src/index.ts",
     "test": "jest --verbose",
     "test:watch": "jest --watchAll --env=node",
     "test:coverage": "jest --ci --reporters=default --runInBand --reporters=jest-junit",
@@ -14,7 +14,7 @@
     "start": "pm2-runtime dist/index.js",
     "heroku-postbuild": "yarn run build"
   },
-  "repository": "git@github.com:slavabez/Bonus-Eventus.git",
+  "repository": "git@github.com:slavabez/be-dice-server.git",
   "author": "Slava Bezgachev <bezgachev@gmail.com>",
   "license": "MIT",
   "engines": {
@@ -54,8 +54,8 @@
       ".(ts)": "ts-jest"
     },
     "testMatch": [
-      "<rootDir>/server/**/__tests__/**/*.{ts}",
-      "<rootDir>/server/**/?(*.)(test).{ts}"
+      "<rootDir>/src/**/__tests__/**/*.{ts}",
+      "<rootDir>/src/**/?(*.)(test).{ts}"
     ],
     "moduleFileExtensions": [
       "ts",
