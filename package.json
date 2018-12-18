@@ -1,7 +1,7 @@
 {
   "name": "be-dice",
   "version": "0.1.0",
-  "description": "Repo for be-dice.com",
+  "description": "Repo for be-dice.com backed written with socket.io",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",

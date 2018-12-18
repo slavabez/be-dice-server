@@ -1,0 +1,9 @@
+# Don't need to copy these into the docker image
+
+node_modules
+*.log
+nodemon.json
+.circleci
+.idea
+dist
+README.md
