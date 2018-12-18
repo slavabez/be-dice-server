@@ -24,7 +24,8 @@ class BeDiceServer {
 
   listen(port?: number): void {
     this.server.listen(port, () => {
-      console.log(`HTTP Server listening on port ${this.getPort()}`);
+      if (process.env.NODE_ENV !== "test" && process.env.NODE_ENV !== "ci")
+        console.log(`HTTP Server listening on port ${this.getPort()}`);
     });
     this.address = this.server.address();
     this.io.on("connection", (socket: socketIO.Socket) => {
