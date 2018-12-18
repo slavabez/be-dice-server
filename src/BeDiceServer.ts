@@ -1,12 +1,6 @@
 import { Server, createServer } from "http";
-import * as express from "express";
 import * as socketIO from "socket.io";
 import { AddressInfo } from "net";
-import * as helmet from "helmet";
-import * as path from "path";
-
-// Express middleware
-import errorMiddleware from "./handlers/errorMiddleware";
 
 // Event handlers
 import { handlePing } from "./handlers/connection";
@@ -14,7 +8,6 @@ import UserManager from "./helpers/UserManager";
 import RoomManager from "./helpers/RoomManager";
 
 class BeDiceServer {
-  private readonly app: express.Application;
   private readonly server: Server;
   public readonly io: socketIO.Server;
 
@@ -23,33 +16,23 @@ class BeDiceServer {
   public rm: RoomManager;
 
   constructor() {
+    this.server = createServer();
     this.io = socketIO();
+    this.io.listen(this.server);
     this.um = new UserManager();
     this.rm = new RoomManager();
   }
 
-  listen(port: number): void {
-    this.io.listen(port);
+  listen(port?: number): void {
+    this.server.listen(port, () => {
+      console.log(`HTTP Server listening on port ${port}`);
+    });
     this.io.on("connection", (socket: socketIO.Socket) => {
       // New user connected, attach socket event listeners
       this.addEventListeners(socket);
 
       socket.on("disconnect", this.um.handleClientDisconnect(socket, this.rm));
     });
-  }
-
-  setupExpress() {
-    // JSON parser and Helmet for basic security settings
-    this.app.use(helmet()).use(express.json());
-    // Serve static files from React's /build/ folder
-    this.app.use(express.static("client/build"));
-    this.app.get("*", (req: express.Request, res: express.Response) => {
-      // If the route wasn't matched with static, route to index.js
-      res.sendFile(path.join(__dirname + "../client/build/index.html"));
-    });
-
-    // Add basic error handling
-    this.app.use(errorMiddleware);
   }
 
   public getAddress() {
