@@ -17,20 +17,19 @@ class BeDiceServer {
 
   constructor() {
     this.server = createServer();
-    this.io = socketIO();
-    this.io.listen(this.server);
+    this.io = socketIO(this.server);
     this.um = new UserManager();
     this.rm = new RoomManager();
   }
 
   listen(port?: number): void {
     this.server.listen(port, () => {
-      console.log(`HTTP Server listening on port ${port}`);
+      console.log(`HTTP Server listening on port ${this.getPort()}`);
     });
+    this.address = this.server.address();
     this.io.on("connection", (socket: socketIO.Socket) => {
       // New user connected, attach socket event listeners
       this.addEventListeners(socket);
-
       socket.on("disconnect", this.um.handleClientDisconnect(socket, this.rm));
     });
   }
@@ -50,8 +49,8 @@ class BeDiceServer {
   }
 
   stop(): void {
-    this.server.close();
     this.io.close();
+    this.server.close();
   }
 
   addEventListeners(socket: socketIO.Socket) {
