@@ -20,12 +20,9 @@ describe("BeDiceServer tests", () => {
   beforeEach(done => {
     const connString = `http://localhost:${server.getPort()}`;
 
-    clientSocket = ioClient.connect(
-      connString,
-      {
-        transports: ["websocket"]
-      }
-    );
+    clientSocket = ioClient.connect(connString, {
+      transports: ["websocket"]
+    });
 
     clientSocket.on("connect", () => {
       done();
@@ -57,6 +54,15 @@ describe("BeDiceServer tests", () => {
       });
 
       server.io.emit("Test emit", { test: "Test" });
+    });
+
+    test("can recieve version of the app from the server", done => {
+      clientSocket.on("server.version", (data: any) => {
+        expect(data.version).toBeTruthy();
+        done();
+      });
+
+      clientSocket.emit("server.version");
     });
   });
 

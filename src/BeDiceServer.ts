@@ -3,7 +3,7 @@ import * as socketIO from "socket.io";
 import { AddressInfo } from "net";
 
 // Event handlers
-import { handlePing } from "./handlers/connection";
+import { handlePing, handleVersion } from "./handlers/connection";
 import UserManager from "./helpers/UserManager";
 import RoomManager from "./helpers/RoomManager";
 
@@ -57,6 +57,7 @@ class BeDiceServer {
   addEventListeners(socket: socketIO.Socket) {
     // Register all events here
     socket.on("server.ping", handlePing(socket));
+    socket.on("server.version", handleVersion(socket));
 
     // Registration stuff
     socket.on("register.new", this.um.handleNewUserRegistration(socket));
