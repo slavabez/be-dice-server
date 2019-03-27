@@ -1,9 +1,7 @@
 import "jest";
-import BeDiceServer from "../BeDiceServer";
-import * as ioClient from "socket.io-client";
-import RoomManager, {Room} from "./RoomManager";
+import RoomManager, { Room } from "./RoomManager";
 import FakeGenerator from "./FakeGenerator";
-import {User} from "./UserManager";
+import { User } from "./UserManager";
 
 describe("RoomManager Unit tests", () => {
   test("Creating new room works", () => {
@@ -70,7 +68,6 @@ describe("RoomManager Unit tests", () => {
   });
 
   describe("testing automatic room deletion (deleteOldRooms)", () => {
-
     let rm: RoomManager;
     const roomName = "old-room";
 
@@ -107,8 +104,5 @@ describe("RoomManager Unit tests", () => {
       rm.deleteOldRooms();
       expect(rm.allRooms.size).toBe(2);
     });
-
   });
 });
-
-

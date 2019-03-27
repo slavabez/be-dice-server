@@ -11,7 +11,7 @@ class BeDiceServer {
   private readonly server: Server;
   public readonly io: socketIO.Server;
 
-  public address?: string | AddressInfo;
+  public address?: string | AddressInfo | null;
   public um: UserManager;
   public rm: RoomManager;
 

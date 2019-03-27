@@ -9,10 +9,8 @@
     "test": "jest --verbose",
     "test:watch": "jest --watchAll --env=node",
     "test:coverage": "jest --ci --reporters=default --runInBand --reporters=jest-junit",
-    "test:client": "cd client && yarn run test",
     "build": "tsc",
-    "start": "pm2-runtime dist/index.js",
-    "heroku-postbuild": "yarn run build"
+    "start": "pm2-runtime dist/index.js"
   },
   "repository": "git@github.com:slavabez/be-dice-server.git",
   "author": "Slava Bezgachev <bezgachev@gmail.com>",
@@ -37,7 +35,7 @@
     "@types/faker": "^4.1.4",
     "@types/helmet": "^0.0.42",
     "@types/jest": "^23.3.9",
-    "@types/node": "^10.12.1",
+    "@types/node": "^11.12.0",
     "@types/socket.io": "^1.4.38",
     "@types/socket.io-client": "^1.4.32",
     "concurrently": "^4.0.1",
@@ -63,7 +61,8 @@
       "json"
     ],
     "reporters": [
-      "default"
+      "default",
+      "jest-junit"
     ],
     "globals": {
       "ts-jest": {
