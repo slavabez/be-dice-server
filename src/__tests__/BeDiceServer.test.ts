@@ -57,7 +57,7 @@ describe("BeDiceServer tests", () => {
       server.io.emit("Test emit", { test: "Test" });
     });
 
-    test("can recieve version of the app from the server", done => {
+    test("can receive version of the app from the server", done => {
       clientSocket.on("server.version", (data: any) => {
         expect(data.version).toBe(version);
         done();
@@ -72,7 +72,6 @@ describe("BeDiceServer tests", () => {
       // Create user, emit register.new, expect register.new.success with session to save
       clientSocket.on("register.new.success", (session: any) => {
         // Seems good, check the session is a string
-        console.log(session.user);
         expect(session.session).toBeTruthy();
         expect(typeof session.session).toBe("string");
         // Session should be less than 4000 bytes because it's saved as a cookie

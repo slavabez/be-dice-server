@@ -2,6 +2,10 @@
 
 This project is what powers the be-dice.com logic, such as creating rooms, sending/receiving dice rolls
 
+Latest commit status: [![CircleCI](https://circleci.com/gh/slavabez/be-dice-server.svg?style=svg)](https://circleci.com/gh/slavabez/be-dice-server)
+
+Latest commit coverage:
+
 ## Built with
 
 Written with Typescript to run on Node 10, using Socket.IO for connectivity. Can build a production-ready Docker image to be deployed anywhere.

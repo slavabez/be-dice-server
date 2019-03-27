@@ -10,6 +10,9 @@ export default class SessionManager {
       hashedSalt.update(process.env.SESSION_KEY);
     } else {
       // No salt set, use nothing
+      console.warn(
+        `User was hashed with no salt. Set the SESSION_KEY variable to a secret salt.`
+      );
       hashedSalt.update("");
     }
 
