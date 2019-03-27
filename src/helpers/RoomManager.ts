@@ -45,7 +45,7 @@ export class Room {
   public numOfUsers?: number;
 
   constructor(name: string) {
-    this.name = name;
+    this.name = name.length < 16 ? name : name.substr(0, 15);
     this.users = new Map<string, User>();
     this.history = [];
     this.createdAt = new Date();
@@ -121,7 +121,7 @@ export default class RoomManager {
     return sRooms.find(r => r !== socket.id);
   }
 
-/*  emitRoomUsersToAll(io: SocketIO.Server): void {
+  /*  emitRoomUsersToAll(io: SocketIO.Server): void {
     this.allRooms.forEach(r => {
       // Get users as array, emit to that room
       const users = Array.from(r.users.values());
@@ -184,8 +184,16 @@ export default class RoomManager {
         // Data should be string with new name
         const room = rm.createNewRoom(data);
         // Send the new room to the client, broadcast new room list to other clients
-        if (room) socket.emit("room.created", room);
-        socket.broadcast.emit("room.list", rm.getRoomList());
+        if (room) {
+          socket.emit("room.created", room);
+          // Send everybody an updated room list
+          socket.broadcast.emit("room.list", rm.getRoomList());
+        } else {
+          socket.emit(
+            "error.client",
+            `Failed to create a new room. Perhaps a room with the same name already exist?`
+          );
+        }
       };
     } catch (e) {
       return function() {
@@ -218,10 +226,11 @@ export default class RoomManager {
       }
       rm.addUserToRoom(user, roomName);
       socket.join(roomName);
+      const room = rm.allRooms.get(roomName);
 
       // Broadcast to the room that a user joined
       socket.broadcast.to(roomName).emit("room.joined", user);
-      socket.emit("room.join.success");
+      socket.emit("room.join.success", room);
     };
   }
 

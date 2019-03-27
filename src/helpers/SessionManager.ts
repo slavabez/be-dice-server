@@ -94,5 +94,4 @@ export default class SessionManager {
       }
     });
   }
-
 }

@@ -45,6 +45,10 @@ export default class UserManager {
     this.allUsers = new Map();
   }
 
+  /**
+   * Creates a new user, assigns an ID
+   * @param props
+   */
   registerNewUser(props: UserProps): null | User {
     // Make sure no user with such ID is already registered
     if (!props.id) {
@@ -99,7 +103,7 @@ export default class UserManager {
 
   handleRestoreUser(socket: socketIO.Socket) {
     return async (data: any) => {
-      // Expect data to be the encrypted cookie
+      // Expect data to be the encrypted string
       try {
         const user = await SessionManager.deserialiseUser(data);
         if (this.allUsers.has(user.id)) {
