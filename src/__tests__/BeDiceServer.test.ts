@@ -2,6 +2,7 @@ import "jest";
 import BeDiceServer from "../BeDiceServer";
 import * as ioClient from "socket.io-client";
 import FakeGenerator from "../helpers/FakeGenerator";
+import { version } from "../../package.json";
 
 describe("BeDiceServer tests", () => {
   let server: BeDiceServer;
@@ -58,7 +59,7 @@ describe("BeDiceServer tests", () => {
 
     test("can recieve version of the app from the server", done => {
       clientSocket.on("server.version", (data: any) => {
-        expect(data.version).toBeTruthy();
+        expect(data.version).toBe(version);
         done();
       });
 
