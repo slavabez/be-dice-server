@@ -45,3 +45,4 @@ jobs:
 
       - store_artifacts:
           path: reports/junit
+          path: coverage
