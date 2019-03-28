@@ -2,9 +2,7 @@
 
 This project is what powers the be-dice.com logic, such as creating rooms, sending/receiving dice rolls
 
-Latest commit status: [![CircleCI](https://circleci.com/gh/slavabez/be-dice-server.svg?style=svg)](https://circleci.com/gh/slavabez/be-dice-server)
-
-Latest commit coverage:
+[![CircleCI](https://circleci.com/gh/slavabez/be-dice-server.svg?style=svg)](https://circleci.com/gh/slavabez/be-dice-server) [![codecov](https://codecov.io/gh/slavabez/be-dice-server/branch/master/graph/badge.svg)](https://codecov.io/gh/slavabez/be-dice-server)
 
 ## Built with
 
@@ -12,7 +10,7 @@ Written with Typescript to run on Node 10, using Socket.IO for connectivity. Can
 
 ## List of SocketIO events
 
-Events that the server listens for:
+#### Events that the server listens for:
 
 - **server.ping** - emits an event called **server.pong** with a message
 - **server.version** - emits an event called **server.version** with the server version (taken from package.json)
@@ -23,6 +21,24 @@ Events that the server listens for:
 - **room.join** - accepts a string (room name) and joins the room. If an error occurred, emits **error.client** with the error and emits **room.list** with up-to-date rooms. If succeeded, emits **room.join.success** with the room object and broadcasts **room.joined** to the room with the user object.
 - **room.leave** - accepts a string (name of the room to leave). If an error occurred, emits **error.client** with the error. If all went well - emits **room.leave.success** and broadcasts **room.left** to the room with the user object.
 - **room.roll** - the main event! Takes a string of a roll (e.g. 2d6 or 4d20) and rolls that die in the room the socket is in. If an error occurred, emits **error.client** with the error. If all went well, broadcasts a **room.roll.new** to the room with an object of type RollMessage.
+
+#### Events that the server emits and their payloads:
+
+- name `payload`
+
+- server.pong `{ message: "pong" }`
+- server.version `{ version: "x.x.x" }`
+- register.new.success `{ session: String, user: Object }`
+- register.new.failure `No payload`
+- register.restore.success `{ user: Object }`
+- register.restore.failure `No payload`
+- room.created `{ room: Object }`
+- room.join.success `{ room: Object }`
+- room.joined `{ user: Object }`
+- room.leave.success `No payload`
+- room.left `{ user: Object }`
+- room.roll.new `{ rollString: String, rolls: Array, total: Number, author: Object }`
+- error.client `String`
 
 ## Code Structure
 
