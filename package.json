@@ -10,7 +10,7 @@
     "test:watch": "jest --watchAll --env=node",
     "test:coverage": "jest --ci --reporters=default --runInBand --reporters=jest-junit --collectCoverage=true",
     "build": "tsc",
-    "start": "pm2-runtime dist/index.js",
+    "start": "pm2-runtime dist/src/index.js",
     "upload-coverage": "codecov"
   },
   "repository": "git@github.com:slavabez/be-dice-server.git",
