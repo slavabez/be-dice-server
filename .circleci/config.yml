@@ -52,4 +52,4 @@ jobs:
           path: coverage
 
       - codecov/upload
-          file: coverage/coverage_final.json
+          file: "coverage/coverage_final.json"
