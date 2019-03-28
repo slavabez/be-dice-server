@@ -51,5 +51,5 @@ jobs:
       - store_artifacts:
           path: coverage
 
-      - codecov/upload
-          file: "coverage/coverage_final.json"
+      - codecov/upload:
+          file: coverage/coverage_final.json
