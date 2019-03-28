@@ -33,23 +33,9 @@ jobs:
           command: yarn build
 
       - run:
-          name: Install JUnit coverage reporter
-          command: yarn add --dev jest-junit
+          name: Run tests, build coverage reports
+          command: yarn test
 
       - run:
-          name: Run tests with JUnit as reporter
-          command: yarn test:coverage
-          environment:
-            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
-
-      - store_test_results:
-          path: reports/junit
-
-      - store_artifacts:
-          path: reports/junit
-
-      - store_artifacts:
-          path: coverage
-
-      - codecov/upload:
-          file: coverage/coverage_final.json
+          name: Upload the coverage reports
+          command: yarn run upload-coverage
