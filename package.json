@@ -66,7 +66,6 @@
       "default",
       "jest-junit"
     ],
-    "collectCoverage": true,
     "globals": {
       "ts-jest": {
         "diagnostics": false

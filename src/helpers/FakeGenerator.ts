@@ -1,16 +1,31 @@
 import * as faker from "faker";
 import * as yadicer from "yadicer";
 import { User } from "./UserManager";
-import { RollMessage, Room } from "./RoomManager";
+import { RollMessage, Room, rollAuthor } from "./RoomManager";
 
 export default class FakeGenerator {
   static fakeUser(): User {
     return new User({
       socketId: faker.random.uuid(),
-      color: "#" + faker.random.number({ min: 100000, max: 999999 }).toString(),
-      avatar: faker.internet.url(),
+      color: {
+        hex: "#" + faker.random.number({ min: 100000, max: 999999 }).toString(),
+        name: faker.name.firstName()
+      },
+      avatar: {
+        name: faker.name.firstName(),
+        src: faker.internet.url(),
+        thumb: faker.internet.url()
+      },
       name: faker.internet.userName()
     });
+  }
+
+  static fakeAuthor(): rollAuthor {
+    return {
+      avatar: faker.name.firstName(),
+      color: "#" + faker.random.number({ min: 100000, max: 999999 }).toString(),
+      name: faker.name.firstName()
+    }
   }
 
   /**
@@ -27,7 +42,7 @@ export default class FakeGenerator {
       max: 20
     })}d${faker.random.number({ min: 1, max: 20 })}`;
     const roll = <RollMessage>await yadicer(randomRollString);
-    roll.author = FakeGenerator.fakeUser();
+    roll.author = FakeGenerator.fakeAuthor();
     return roll;
   }
 

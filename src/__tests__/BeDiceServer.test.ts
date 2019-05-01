@@ -2,6 +2,7 @@ import "jest";
 import BeDiceServer from "../BeDiceServer";
 import * as ioClient from "socket.io-client";
 import FakeGenerator from "../helpers/FakeGenerator";
+// @ts-ignore
 import { version } from "../../package.json";
 
 describe("BeDiceServer tests", () => {
@@ -106,9 +107,16 @@ describe("BeDiceServer tests", () => {
       const noName = FakeGenerator.fakeUser();
       noName.name = "";
       const noAvatar = FakeGenerator.fakeUser();
-      noAvatar.avatar = "";
+      noAvatar.avatar = {
+        thumb: "",
+        src: "",
+        name: ""
+      };
       const noColor = FakeGenerator.fakeUser();
-      noColor.color = "";
+      noColor.color = {
+        hex: "",
+        name: ""
+      };
 
       clientSocket.emit("register.new", noName);
       clientSocket.emit("register.new", noAvatar);

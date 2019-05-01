@@ -2,39 +2,60 @@ import * as uniqid from "uniqid";
 import * as socketIO from "socket.io";
 import SessionManager from "./SessionManager";
 import RoomManager from "./RoomManager";
+import { ensureLength } from "./Utilities";
+
+export interface Color {
+  hex: string;
+  name: string;
+}
+
+export interface Avatar {
+  thumb: string;
+  src: string;
+  name: string;
+}
 
 export interface UserProps {
-  avatar: string;
+  avatar: Avatar;
   name: string;
-  color: string;
+  color: Color;
   id?: string;
   socketId: string;
 }
 
 export class User {
-  public avatar: string;
+  public avatar: Avatar;
   public name: string;
-  public color: string;
+  public color: Color;
   public id: string;
   public socketId: string;
 
   constructor(props: UserProps) {
-    // Wanted to use Object.assign, but typescript doesn't like it
     // If overly long values are passed, cut to reasonable size
     if (props.id) {
-      this.id = props.id.length > 25 ? props.id.substr(0, 15) : props.id;
+      this.id = ensureLength(props.id, 15);
     } else {
       this.id = uniqid();
     }
-    this.name = props.name.length > 15 ? props.name.substr(0, 15) : props.name;
-    this.avatar =
-      props.avatar.length > 255 ? props.avatar.substr(0, 255) : props.avatar;
-    this.color =
-      props.color.length > 7 ? props.color.substr(0, 7) : props.color;
-    this.socketId =
-      props.socketId.length > 25
-        ? props.socketId.substr(0, 15)
-        : props.socketId;
+    this.name = ensureLength(props.name, 16);
+
+    this.avatar = {
+      thumb: "",
+      src: "",
+      name: ""
+    };
+    this.avatar.name = ensureLength(props.avatar.name, 20);
+    this.avatar.src = ensureLength(props.avatar.src);
+    this.avatar.thumb = ensureLength(props.avatar.thumb);
+
+    this.color = {
+      hex: "",
+      name: ""
+    };
+    this.color.hex = ensureLength(props.color.hex, 9);
+    this.color.name = ensureLength(props.color.name, 20);
+
+    this.socketId = ensureLength(props.socketId, 20);
   }
 }
 
@@ -59,7 +80,9 @@ export default class UserManager {
       return null;
     }
     // Make sure all fields exist (avatar, color, name)
-    if (!props.avatar || !props.color || !props.name) return null;
+    if (!props.name) return null;
+    if (!props.avatar.thumb || !props.avatar.src) return null;
+    if (!props.color.hex || !props.color.name) return null;
     const u = new User(props);
     this.allUsers.set(props.id, u);
     return u;
