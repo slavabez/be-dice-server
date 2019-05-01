@@ -24,9 +24,17 @@ describe("UserManager Unit Tests", () => {
       const props = {
         id: "SomeAlphaNumericID",
         name: "MyNameIsSoSoSoSoLong",
-        avatar:
-          "img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg.png",
-        color: "#FF1133FF1133FF1133FF1133",
+        avatar: {
+          thumb:
+            "img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg.png",
+          src:
+            "img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg.png",
+          name: "123456789012345678901234567890"
+        },
+        color: {
+          hex: "#FF1133FF1133FF1133FF1133",
+          name: "123456789012345678901234567890"
+        },
         socketId: "AlsoSomeAlphaNumericID"
       };
       um.registerNewUser(props);
@@ -34,11 +42,18 @@ describe("UserManager Unit Tests", () => {
       expect(um.allUsers.size).toBe(1);
       const saved = um.allUsers.get("SomeAlphaNumericID");
       expect(saved instanceof User).toBe(true);
-      expect(saved!.name).toBe("MyNameIsSoSoSoS");
-      expect(saved!.avatar).toBe(
+      expect(saved!.name).toBe("MyNameIsSoSoSoSo");
+
+      expect(saved!.avatar!.thumb).toBe(
         "img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg"
       );
-      expect(saved!.color).toBe("#FF1133");
+      expect(saved!.avatar!.src).toBe(
+        "img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg"
+      );
+      expect(saved!.avatar!.name).toBe("12345678901234567890");
+
+      expect(saved!.color!.hex).toBe("#FF1133FF");
+      expect(saved!.color!.name).toBe("12345678901234567890");
     });
   });
 

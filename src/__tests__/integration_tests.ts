@@ -4,6 +4,12 @@ import * as ioClient from "socket.io-client";
 import RoomManager, { RollMessage, Room } from "../helpers/RoomManager";
 import FakeGenerator from "../helpers/FakeGenerator";
 
+const userProps = {
+  name: "Tester",
+  avatar: { name: "ava", src: "yikes.png", thumb: "yikes.png" },
+  color: { hex: "#fafafa", name: "red" }
+};
+
 describe("Server-client integration tests", () => {
   let server: BeDiceServer;
   let clients: SocketIOClient.Socket[] = [];
@@ -31,10 +37,9 @@ describe("Server-client integration tests", () => {
     };
 
     for (let i = 0; i < numOfClients; i++) {
-      const socket = ioClient.connect(
-        connString,
-        { transports: ["websocket"] }
-      );
+      const socket = ioClient.connect(connString, {
+        transports: ["websocket"]
+      });
       socket.on("connect", connected);
       clients.push(socket);
     }
@@ -103,10 +108,7 @@ describe("Simple use flow tests with single client", () => {
   beforeEach(done => {
     const connString = `http://localhost:${server.getPort()}`;
 
-    client = ioClient.connect(
-      connString,
-      { transports: ["websocket"] }
-    );
+    client = ioClient.connect(connString, { transports: ["websocket"] });
 
     client.on("connect", () => {
       done();
@@ -124,9 +126,16 @@ describe("Simple use flow tests with single client", () => {
   test("register user -> session -> restore user works", done => {
     expect.assertions(5);
     const userProps = {
-      avatar: "some_image.jpeg",
+      avatar: {
+        name: "Warlock",
+        src: "some_image.jpeg",
+        thumb: "some_image.jpeg"
+      },
       name: "Josh Peterson",
-      color: "#ff34ac"
+      color: {
+        hex: "#ff34ac",
+        name: "Blue"
+      }
     };
 
     client.on("register.new.success", (data: any) => {
@@ -144,8 +153,8 @@ describe("Simple use flow tests with single client", () => {
 
     client.on("register.restore.success", (user: any) => {
       expect(user.name).toBe(userProps.name);
-      expect(user.avatar).toBe(userProps.avatar);
-      expect(user.color).toBe(userProps.color);
+      expect(user.avatar).toEqual(userProps.avatar);
+      expect(user.color).toEqual(userProps.color);
       done();
     });
 
@@ -163,12 +172,11 @@ describe("Simple use flow tests with single client", () => {
 
   test("register user -> create & enter room -> leave room works", done => {
     expect.assertions(4);
-    const userProps = { name: "Tester", avatar: "yikes.png", color: "red" };
+
     const roomName = "A New Room";
 
     client.on("error.client", (error: any) => {
-      console.error(error);
-      done.fail(`Received client.error event, something went wrong`);
+      done.fail(`Received client.error event: ${error}`);
     });
 
     client.on("room.leave.success", () => {
@@ -201,7 +209,6 @@ describe("Simple use flow tests with single client", () => {
 
   test("register user -> create & enter room -> roll a die -> leave room works", done => {
     // expect.assertions(4);
-    const userProps = { name: "Tester", avatar: "yikes.png", color: "#ff3454" };
     const roomName = "A New Room";
     const rollString = "2d20";
 
@@ -221,7 +228,11 @@ describe("Simple use flow tests with single client", () => {
     // 5
     client.on("room.roll.new", (rollMessage: RollMessage) => {
       // Make sure the roll assigned the right author
-      expect(rollMessage.author).toEqual(userProps);
+      expect(rollMessage.author).toEqual({
+        name: userProps.name,
+        color: userProps.color.hex,
+        avatar: userProps.avatar.src
+      });
       // Roll string (2d20)
       expect(rollMessage.rollString).toBe(rollString);
       // Roll Total should be between 2 and 40, since we rolled 2d20

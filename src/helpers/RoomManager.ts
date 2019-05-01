@@ -8,7 +8,7 @@ interface singleRoll {
   result?: number;
 }
 
-interface rollAuthor {
+export interface rollAuthor {
   name: string;
   avatar: string;
   color: string;
@@ -280,8 +280,8 @@ export default class RoomManager {
           rolls: rolls.rolls,
           total: rolls.total,
           author: {
-            avatar: user.avatar,
-            color: user.color,
+            avatar: user.avatar.thumb,
+            color: user.color.hex,
             name: user.name
           }
         });

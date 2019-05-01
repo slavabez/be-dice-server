@@ -88,9 +88,17 @@ describe("User serialise() and deserialise()", () => {
   test("serialising largest possible user can fit into 4000 bytes", async () => {
     const bigBoy = new User({
       name: "MyNameIsSoSoSoS",
-      avatar:
-        "img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg",
-      color: "1234567",
+      avatar: {
+        thumb:
+          "img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg",
+        src:
+          "img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg/img/avatar/jpeg",
+        name: "1235678901234567890123456"
+      },
+      color: {
+        name: "123456789012345678901234567890",
+        hex: "#fafafafa"
+      },
       socketId: "aaaaaaaaaaaaaaaaaaaaaaaaa"
     });
     const encrypted = await SessionManager.serialiseUser(bigBoy);
