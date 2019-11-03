@@ -4,26 +4,27 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
-    - name: Yarn install and test with coverage generation
-      run: |
-        yarn
-        yarn test:coverage
-      if: success()
-    - name: Codecov upload
-      uses: codecov/codecov-action@v1.0.3
-      if: success()
-    - name: Docker build & push
-      uses: manusa/actions-publish-docker@master
-      with:
-        name: slavabez/be-dice-server
-        username: ${{ secrets.DOCKER_HUB_USER }}
-        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: Yarn install and test with coverage generation
+        run: |
+          yarn
+          yarn test:coverage
+        if: success()
+      - name: Codecov upload
+        uses: codecov/codecov-action@v1.0.3
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}
+        if: success()
+      - name: Docker build & push
+        uses: manusa/actions-publish-docker@master
+        with:
+          name: slavabez/be-dice-server
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
