@@ -1,7 +1,9 @@
 import { Server, createServer } from "http";
 import * as socketIO from "socket.io";
 import { AddressInfo } from "net";
+import { config as loadEnv } from "dotenv";
 
+loadEnv();
 // Event handlers
 import { handlePing, handleVersion } from "./handlers/connection";
 import UserManager from "./helpers/UserManager";
@@ -24,6 +26,7 @@ class BeDiceServer {
 
   listen(port?: number): void {
     this.server.listen(port, () => {
+      // Don't spam the console if we're in a test environment
       if (process.env.NODE_ENV !== "test" && process.env.NODE_ENV !== "ci")
         console.log(`HTTP Server listening on port ${this.getPort()}`);
     });

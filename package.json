@@ -1,12 +1,12 @@
 {
   "name": "be-dice",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Repo for be-dice.com backed written with socket.io",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
     "debug": "node --inspect=5858 -r ts-node/register src/index.ts",
-    "test": "jest --verbose",
+    "test": "jest",
     "test:watch": "jest --watchAll --env=node",
     "test:coverage": "jest --ci --reporters=default --runInBand --reporters=jest-junit --collectCoverage=true",
     "build": "tsc",
@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@types/uniqid": "^4.1.2",
+    "dotenv": "^8.2.0",
     "express": "^4.16.4",
     "helmet": "^3.14.0",
     "pm2": "^3.2.2",
@@ -45,6 +46,7 @@
     "jest": "^23.6.0",
     "jest-junit": "^5.2.0",
     "nodemon": "^1.18.5",
+    "prettier": "^1.18.2",
     "socket.io-client": "^2.1.1",
     "ts-jest": "^23.10.4",
     "typescript": "^3.1.5"
@@ -63,8 +65,7 @@
       "json"
     ],
     "reporters": [
-      "default",
-      "jest-junit"
+      "default"
     ],
     "globals": {
       "ts-jest": {

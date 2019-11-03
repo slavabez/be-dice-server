@@ -33,7 +33,7 @@ export class User {
   constructor(props: UserProps) {
     // If overly long values are passed, cut to reasonable size
     if (props.id) {
-      this.id = ensureLength(props.id, 15);
+      this.id = ensureLength(props.id, 16);
     } else {
       this.id = uniqid();
     }
