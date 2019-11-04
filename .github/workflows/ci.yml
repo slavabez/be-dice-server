@@ -23,8 +23,8 @@ jobs:
           token: ${{secrets.CODECOV_TOKEN}}
         if: success()
       - name: Docker build & push
-        uses: manusa/actions-publish-docker@master
+        uses: HurricanKai/Publish-Docker-Github-Action@master
         with:
           name: slavabez/be-dice-server
-          username: ${{ secrets.DOCKER_HUB_USER }}
-          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
