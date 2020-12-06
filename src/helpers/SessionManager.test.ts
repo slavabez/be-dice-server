@@ -1,7 +1,10 @@
 import "jest";
+import { config as loadEnv } from "dotenv";
 import SessionManager from "./SessionManager";
 import FakeGenerator from "./FakeGenerator";
 import { User } from "./UserManager";
+
+loadEnv();
 
 describe("Encryption and decryption unit tests", function() {
   let secretCode = "I'm a secret string";
