@@ -18,8 +18,11 @@ COPY src ./src
 # Build (transpile from TS to JS)
 RUN yarn run build
 
+# Install PM2 runtime
+RUN npm install pm2 -g
+
 # Runs on port 3050 by default
 EXPOSE 3050
 
 # PM2 is used by default via package.json, just need to run 'yarn run start'
-CMD ["yarn", "run", "start"]
+CMD ["pm2-runtime", "dist/src/index.js"]
