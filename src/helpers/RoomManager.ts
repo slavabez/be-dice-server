@@ -68,7 +68,7 @@ export default class RoomManager {
 
   getRoomList(): Room[] {
     const list = Array.from(this.allRooms.values());
-    list.forEach(li => {
+    list.forEach((li) => {
       li.numOfUsers = li.users.size;
     });
     return list;
@@ -100,8 +100,8 @@ export default class RoomManager {
    */
   removeUserFromAllRooms(user: User): boolean {
     let hasDeleted = false;
-    this.allRooms.forEach(r => {
-      r.users.forEach(u => {
+    this.allRooms.forEach((r) => {
+      r.users.forEach((u) => {
         if (u.id === user.id) {
           r.users.delete(user.id);
           hasDeleted = true;
@@ -118,7 +118,7 @@ export default class RoomManager {
   public static getSocketRoom(socket: SocketIO.Socket) {
     const sRooms = Object.values(socket.rooms);
     // Rooms is an object, by default every socket is automatically in it's own room with ID of user ID
-    return sRooms.find(r => r !== socket.id);
+    return sRooms.find((r) => r !== socket.id);
   }
 
   /*  emitRoomUsersToAll(io: SocketIO.Server): void {
@@ -151,7 +151,7 @@ export default class RoomManager {
   deleteOldRooms(): void {
     try {
       const namesToDelete: string[] = [];
-      this.allRooms.forEach(r => {
+      this.allRooms.forEach((r) => {
         // First, check if there are any messages in history
         if (r.history.length < 1) {
           if (r.createdAt.getTime() + 1000 * 60 * 60 < new Date().getTime()) {
@@ -161,7 +161,7 @@ export default class RoomManager {
         } else {
           // History exists, check time on the last roll, flag to delete if older than 60 minutes
           const lastMessageIsOld = r.history.some(
-            message =>
+            (message) =>
               message.createdAt.getTime() + 1000 * 60 * 60 <
               new Date().getTime()
           );
@@ -169,7 +169,7 @@ export default class RoomManager {
         }
       });
       // console.log(`Flagged ${namesToDelete.length} rooms for deletion.`);
-      namesToDelete.forEach(n => {
+      namesToDelete.forEach((n) => {
         if (this.allRooms.has(n)) this.allRooms.delete(n);
       });
     } catch (e) {
@@ -180,7 +180,7 @@ export default class RoomManager {
   handleRoomCreate(socket: SocketIO.Socket) {
     const rm = this;
     try {
-      return function(data: any) {
+      return function (data: any) {
         // Data should be string with new name
         const room = rm.createNewRoom(data);
         // Send the new room to the client, broadcast new room list to other clients
@@ -196,7 +196,7 @@ export default class RoomManager {
         }
       };
     } catch (e) {
-      return function() {
+      return function () {
         socket.emit("error.client", `Failed to create a new room`);
       };
     }
@@ -204,14 +204,14 @@ export default class RoomManager {
 
   handleRoomList(socket: SocketIO.Socket) {
     const rm = this;
-    return function() {
+    return function () {
       socket.emit("room.list", rm.getRoomList());
     };
   }
 
   handleRoomJoin(socket: SocketIO.Socket, um: UserManager) {
     const rm = this;
-    return function(roomName: any) {
+    return function (roomName: any) {
       // See if such room exists
       if (!rm.allRooms.has(roomName)) {
         socket.emit("error.client", "Room does not exist");
@@ -236,7 +236,7 @@ export default class RoomManager {
 
   handleRoomLeave(socket: SocketIO.Socket, um: UserManager) {
     const rm = this;
-    return function(roomName: any) {
+    return function (roomName: any) {
       // See if such room exists
       if (!rm.allRooms.has(roomName)) {
         socket.emit("error.client", "Error leaving the room");
@@ -260,7 +260,7 @@ export default class RoomManager {
 
   handleRoll(socket: SocketIO.Socket, um: UserManager, io: SocketIO.Server) {
     const rm = this;
-    return async function(rollData: any) {
+    return async function (rollData: any) {
       try {
         const room = RoomManager.getSocketRoom(socket);
         if (!room || !rm.allRooms.has(room)) {
@@ -282,8 +282,8 @@ export default class RoomManager {
           author: {
             avatar: user.avatar.thumb,
             color: user.color.hex,
-            name: user.name
-          }
+            name: user.name,
+          },
         });
         rm.postRollToRoom(rollMessage, room);
         // Broadcast to all in the room a new roll just came in
@@ -295,5 +295,9 @@ export default class RoomManager {
         );
       }
     };
+  }
+
+  getFormattedData() {
+    return { totalRooms: this.allRooms.size };
   }
 }

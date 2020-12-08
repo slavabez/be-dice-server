@@ -18,10 +18,27 @@ class BeDiceServer {
   public rm: RoomManager;
 
   constructor() {
-    this.server = createServer();
-    this.io = socketIO(this.server);
     this.um = new UserManager();
     this.rm = new RoomManager();
+    this.server = createServer((_, res) => {
+      try {
+        // Attempt to read room numbers and user data
+        const metaData = {
+          userData: this.um.getFormattedData(),
+          roomData: this.rm.getFormattedData(),
+          welcomeMessage: `Hello! This is the Be-Dice.com backend`,
+        };
+
+        res.setHeader(`Content-Type`, `application/json`);
+        res.writeHead(200);
+
+        res.end(JSON.stringify(metaData));
+      } catch (e) {
+        res.writeHead(500);
+        res.end(`Internal server error`);
+      }
+    });
+    this.io = socketIO(this.server);
   }
 
   listen(port?: number): void {

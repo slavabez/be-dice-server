@@ -42,7 +42,7 @@ export class User {
     this.avatar = {
       thumb: "",
       src: "",
-      name: ""
+      name: "",
     };
     this.avatar.name = ensureLength(props.avatar.name, 20);
     this.avatar.src = ensureLength(props.avatar.src);
@@ -50,7 +50,7 @@ export class User {
 
     this.color = {
       hex: "",
-      name: ""
+      name: "",
     };
     this.color.hex = ensureLength(props.color.hex, 9);
     this.color.name = ensureLength(props.color.name, 20);
@@ -98,7 +98,7 @@ export default class UserManager {
   findUserBySocketId(socketId: string): User | undefined {
     // Some neat es6 array methods
     return Array.from(this.allUsers.values()).find(
-      u => u.socketId === socketId
+      (u) => u.socketId === socketId
     );
   }
 
@@ -159,5 +159,9 @@ export default class UserManager {
       rm.removeUserFromRoom(user, room);
       socket.to(room).broadcast.emit("room.leave");
     };
+  }
+
+  getFormattedData() {
+    return { totalUsers: this.allUsers.size };
   }
 }
