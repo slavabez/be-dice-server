@@ -20,19 +20,39 @@ class BeDiceServer {
   constructor() {
     this.um = new UserManager();
     this.rm = new RoomManager();
-    this.server = createServer((_, res) => {
+    this.server = createServer((req, res) => {
       try {
-        // Attempt to read room numbers and user data
-        const metaData = {
-          userData: this.um.getFormattedData(),
-          roomData: this.rm.getFormattedData(),
-          welcomeMessage: `Hello! This is the Be-Dice.com backend`,
-        };
+        switch (req.url) {
+          case "/":
+            // Attempt to read room numbers and user data
+            const metaData = {
+              userData: this.um.getFormattedData(),
+              roomData: this.rm.getFormattedData(),
+              welcomeMessage: `Hello! This is the Be-Dice.com backend`,
+            };
 
-        res.setHeader(`Content-Type`, `application/json`);
-        res.writeHead(200);
+            res.setHeader(`Content-Type`, `application/json`);
+            res.writeHead(200);
 
-        res.end(JSON.stringify(metaData));
+            res.end(JSON.stringify(metaData));
+            break;
+          case "/health":
+            res.setHeader(`Content-Type`, `application/json`);
+            res.writeHead(200);
+            res.end(
+              JSON.stringify({
+                success: true,
+                message: "Server is live and working",
+              })
+            );
+            break;
+
+          default:
+            // Not found
+            res.setHeader(`Content-Type`, `application/json`);
+            res.writeHead(404);
+            res.end(JSON.stringify({ error: "Page not found" }));
+        }
       } catch (e) {
         res.writeHead(500);
         res.end(`Internal server error`);
